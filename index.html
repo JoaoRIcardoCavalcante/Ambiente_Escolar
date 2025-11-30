@@ -122,16 +122,46 @@
     </div>
 
     <!-- Feedback -->
-    <div class="feedback" id="feedback">
-        <h2>Tem ideias ou sugestões?</h2>
-        <p>Sua voz é fundamental para construirmos um IFPB mais humano e acolhedor!</p>
-        <form action="https://formspree.io/f/seu-email-aqui" method="POST">
-            <input type="text" name="nome" placeholder="Seu nome (opcional)">
-            <input type="email" name="_replyto" placeholder="Seu e-mail (opcional)">
-            <textarea name="mensagem" rows="6" placeholder="Escreva aqui sua ideia, crítica ou sugestão..." required></textarea>
-            <button type="submit">Enviar Sugestão</button>
-        </form>
+   
+    <!-- Feedback -->
+<div class="feedback" id="feedback">
+    <h2>Tem ideias ou sugestões?</h2>
+    <p>Sua voz é fundamental para construirmos um IFPB mais humano e acolhedor!</p>
+
+    <!-- Formulário que envia direto pro Google Sheets -->
+    <form id="google-sheet-form" style="max-width:700px;margin:50px auto;display:grid;gap:18px;">
+        <input type="text" name="entry.123456789" placeholder="Seu nome (opcional)" autocomplete="off">
+        <input type="email" name="entry.987654321" placeholder="Seu e-mail (opcional)" autocomplete="off">
+        <textarea name="entry.111222333" rows="6" placeholder="Escreva aqui sua ideia, crítica ou sugestão..." required></textarea>
+        <button type="submit">Enviar Sugestão</button>
+    </form>
+
+    <!-- Mensagem de sucesso -->
+    <div id="sucesso" style="display:none;margin-top:20px;padding:20px;background:rgba(255,255,255,0.2);border-radius:12px;color:white;font-weight:bold;">
+        Feedback enviado com sucesso! Obrigado por ajudar a melhorar o IFPB!
     </div>
+</div>
+
+<script>
+const scriptURL = 'https://docs.google.com/forms/d/e/1FAIpQLSfMFwPIMkQsnas6_Iaia5skMue2kfQPfwMf5L2bO_bQDbuIyQ/viewform?usp=preview';  // ← VOU TE DAR ESSE LINK EM 30 SEGUNDOS
+const form = document.getElementById('google-sheet-form');
+const sucesso = document.getElementById('sucesso');
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    sucesso.style.display = 'block';
+
+    fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            form.reset();
+            setTimeout(() => sucesso.style.display = 'none', 6000);
+        })
+        .catch(error => {
+            alert('Erro ao enviar. Tente novamente.');
+            sucesso.style.display = 'none';
+        });
+});
+</script>
 
     <footer>
         <p>Ambiente Escolar IFPB © 2025 • Juntos por um campus mais humano, inclusivo e acolhedor.</p>
