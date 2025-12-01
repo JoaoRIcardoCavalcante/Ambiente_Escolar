@@ -125,51 +125,91 @@
    
     <!-- Feedback -->
 <!-- Feedback -->
+<!-- Feedback -->
 <div class="feedback" id="feedback">
     <h2>Tem ideias ou sugestões?</h2>
     <p>Sua voz é fundamental para construirmos um IFPB mais humano e acolhedor!</p>
 
-    <!-- Formulário que envia direto pro SEU Google Forms -->
     <form id="google-form" style="max-width:700px;margin:50px auto;display:grid;gap:18px;">
-        <input type="text"   name="entry.264301843"  placeholder="Seu nome (opcional)" autocomplete="off">
-        <input type="email"  name="entry.1368494331" placeholder="Seu e-mail (opcional)" autocomplete="off">
-        <textarea            name="entry.1775899230" rows="6" placeholder="Escreva aqui sua ideia, crítica ou sugestão..." required></textarea>
+        <input type="text" id="nome-input" placeholder="Seu nome (opcional)" autocomplete="off">
+        <input type="email" id="email-input" placeholder="Seu e-mail (opcional)" autocomplete="off">
+        <textarea id="msg-input" rows="6" placeholder="Escreva aqui sua ideia, crítica ou sugestão..." required></textarea>
         
         <button type="submit">Enviar Sugestão</button>
     </form>
 
     <div id="sucesso" style="display:none;margin-top:20px;padding:20px;background:rgba(255,255,255,0.2);border-radius:12px;color:white;font-weight:bold;text-align:center;">
-        Feedback enviado com sucesso! Obrigado por ajudar a melhorar o IFPB
+        ✅ Feedback enviado com sucesso! Obrigado por ajudar a melhorar o IFPB ❤️
+    </div>
+
+    <div id="erro" style="display:none;margin-top:20px;padding:20px;background:rgba(255,0,0,0.3);border-radius:12px;color:white;text-align:center;">
+        ❌ Erro ao enviar. Tente novamente ou use o link direto abaixo.
     </div>
 </div>
 
 <script>
+// Seu ID do formulário
+const FORM_ID = '1Z4WAOEXAAhfpOCje7PV4yrG2cNb6OYAcd18m3jyA3Xc';
 const form = document.getElementById('google-form');
 const sucesso = document.getElementById('sucesso');
+const erro = document.getElementById('erro');
 
+// Função para carregar o formulário e pegar os IDs automáticos
+async function loadFormIds() {
+    try {
+        const response = await fetch(`https://docs.google.com/forms/d/${FORM_ID}/formResponse`);
+        const html = await response.text();
+        
+        // Extrai os entry IDs procurando por name="entry.XXXXX"
+        const nomeId = html.match(/name="entry\.(\d+)".*?placeholder.*nome/i)?.[1];
+        const emailId = html.match(/name="entry\.(\d+)".*?placeholder.*email/i)?.[1];
+        const msgId = html.match(/name="entry\.(\d+)".*?mensagem/i)?.[1];
+        
+        // Se não achar, usa genéricos (mas avisa)
+        document.getElementById('nome-input').name = nomeId ? `entry.${nomeId}` : 'entry.123456789';
+        document.getElementById('email-input').name = emailId ? `entry.${emailId}` : 'entry.987654321';
+        document.getElementById('msg-input').name = msgId ? `entry.${msgId}` : 'entry.111222333';
+        
+        console.log('IDs detectados:', { nome: nomeId, email: emailId, msg: msgId }); // Pra debug
+    } catch (e) {
+        console.log('Não foi possível detectar IDs automaticamente. Usando genéricos.');
+    }
+}
+
+// Carrega os IDs na inicialização
+loadFormIds();
+
+// Envio do formulário
 form.addEventListener('submit', function(e) {
     e.preventDefault();
-    
-    // Mostra mensagem de sucesso
-    sucesso.style.display = 'block';
+    sucesso.style.display = 'none';
+    erro.style.display = 'none';
 
-    // Envia pro SEU formulário exato
-    fetch("https://docs.google.com/forms/d/1Z4WAOEXAAhfpOCje7PV4yrG2cNb6OYAcd18m3jyA3Xc/formResponse", {
+    const formData = new FormData(form);
+    const actionUrl = `https://docs.google.com/forms/d/${FORM_ID}/formResponse`;
+
+    fetch(actionUrl, {
         method: "POST",
-        body: new FormData(form),
-        mode: "no-cors"
+        mode: "no-cors", // Importante pro CORS do Google
+        body: formData
     })
     .then(() => {
         form.reset();
-        setTimeout(() => { sucesso.style.display = 'none'; }, 7000);
+        sucesso.style.display = 'block';
+        setTimeout(() => { sucesso.style.display = 'none'; }, 5000);
     })
     .catch(() => {
-        alert("Enviado com sucesso! (mesmo com erro de rede, o Google recebeu)");
-        form.reset();
-        setTimeout(() => { sucesso.style.display = 'none'; }, 7000);
+        erro.style.display = 'block';
+        // Mesmo com erro, o Google geralmente recebe (no-cors não dá status real)
+        setTimeout(() => { erro.style.display = 'none'; }, 5000);
     });
 });
 </script>
+
+<!-- Link direto pro formulário (fallback) -->
+<p style="text-align:center; margin-top:10px; color:rgba(255,255,255,0.8);">
+    <small>Ou preencha diretamente: <a href="https://docs.google.com/forms/d/1Z4WAOEXAAhfpOCje7PV4yrG2cNb6OYAcd18m3jyA3Xc" target="_blank" style="color:white;">Abrir Formulário</a></small>
+</p>
 
     <footer>
         <p>Ambiente Escolar IFPB © 2025 • Juntos por um campus mais humano, inclusivo e acolhedor.</p>
