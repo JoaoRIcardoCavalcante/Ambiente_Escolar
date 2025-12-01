@@ -7,50 +7,240 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        :root {--verde:#006634; --vermelho:#c41d2a; --cinza:#f8f9fa; --escuro:#121212;}
-        *{margin:0;padding:0;box-sizing:border-box;}
-        body{font-family:'Poppins',sans-serif;background:var(--cinza);color:#333;line-height:1.6;transition:0.4s;}
-        body.dark{background:#0f0f0f;color:#ddd;}
-        header{position:fixed;top:0;left:0;right:0;background:rgba(0,102,52,0.95);backdrop-filter:blur(10px);z-index:1000;padding:15px 5%;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
-        .logo-img{height:65px;}
-        nav a{color:white;margin:0 18px;text-decoration:none;font-weight:500;transition:0.3s;}
-        nav a:hover{color:var(--vermelho);}
-        .dark-toggle{background:none;border:none;color:white;font-size:1.5rem;cursor:pointer;}
+        :root {
+            --verde: #006634;
+            --vermelho: #c41d2a;
+            --cinza: #f8f9fa;
+            --escuro: #121212;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--cinza);
+            color: #333;
+            line-height: 1.6;
+            transition: 0.4s;
+            overflow-x: hidden;
+        }
+        body.dark { background: #0f0f0f; color: #ddd; }
 
-        .hero{height:100vh;background:linear-gradient(rgba(255, 253, 253, 0.9),rgba(1, 4, 3, 0.85)),url('https://images.unsplash.com/photo-1523050858586-58afa8e18f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover; display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:white;padding:0 20px;}
-        .hero img{width:200px;margin-bottom:30px;filter:drop-shadow(0 10px 20px rgba(0,0,0,0.5));}
-        .hero h1{font-size:4.5rem;margin:20px 0;}
-        .hero p{font-size:1.5rem;max-width:900px;}
+        /* HEADER FIXO + MENU HAMBURGUER */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(0,102,52,0.98);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 12px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .logo-img {
+            height: 58px;
+            transition: 0.3s;
+        }
+        .menu-toggle {
+            display: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.02rem;
+            padding: 8px 0;
+            transition: 0.3s;
+        }
+        nav a:hover { color: var(--vermelho); }
+        .dark-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
 
-        .container{max-width:1200px;margin:0 auto;padding:120px 20px;}
-        h2{font-size:3rem;text-align:center;margin-bottom:70px;color:var(--verde);}
-        body.dark h2{color:#4caf50;}
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)),
+                        url('https://images.unsplash.com/photo-1523050858586-58afa8e18f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 100px 20px 80px;
+        }
+        .hero img { 
+            width: 190px; 
+            margin-bottom: 20px; 
+            filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+        }
+        .hero h1 {
+            font-size: 4.2rem;
+            margin: 15px 0;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+        .hero p {
+            font-size: 1.4rem;
+            max-width: 900px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
 
-        .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:30px;}
-        .card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.1);transition:0.4s;}
-        body.dark .card{background:#1e1e1e;}
-        .card:hover{transform:translateY(-15px);box-shadow:0 25px 50px rgba(0,0,0,0.2);}
-        .card-header{background:var(--verde);color:white;padding:22px;text-align:center;font-size:1.4rem;font-weight:600;}
-        .card-body{padding:28px;}
-        .card-body ul{list-style:none;}
-        .card-body li{position:relative;padding:10px 0 10px 35px;}
-        .card-body li:before{content:"✓";color:var(--vermelho);font-weight:bold;position:absolute;left:0;}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 120px;
+        }
+        h2 {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--verde);
+        }
+        body.dark h2 { color: #66bb6a; }
 
-        .feedback{background:linear-gradient(135deg,var(--verde),var(--vermelho));color:white;text-align:center;padding:120px 20px;}
-        .feedback form{max-width:700px;margin:50px auto;display:grid;gap:18px;}
-        .feedback input,.feedback textarea{padding:18px;border:none;border-radius:12px;font-family:inherit;font-size:1rem;}
-        .feedback button{background:white;color:var(--verde);font-weight:bold;padding:18px;border:none;border-radius:12px;cursor:pointer;font-size:1.2rem;transition:0.3s;}
-        .feedback button:hover{background:#222;color:white;}
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+            transition: all 0.4s ease;
+        }
+        body.dark .card { background: #1e1e1e; }
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .card-header {
+            background: var(--verde);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 25px;
+        }
+        .card-body ul { list-style: none; }
+        .card-body li {
+            position: relative;
+            padding: 12px 0 12px 38px;
+            font-size: 1.05rem;
+        }
+        .card-body li:before {
+            content: "Checkmark";
+            color: var(--vermelho);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.4rem;
+        }
 
-        footer{background:#111;color:#aaa;text-align:center;padding:50px;font-size:0.95rem;}
-        @media(max-width:768px){.hero h1{font-size:3rem;}.hero p{font-size:1.2rem;}nav{display:none;}}
+        /* FEEDBACK */
+        .feedback {
+            background: linear-gradient(135deg, var(--verde), var(--vermelho));
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .feedback h2 { color: white; margin-bottom: 20px; }
+        .feedback-btn {
+            display: inline-block;
+            background: white;
+            color: var(--verde);
+            padding: 20px 50px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .feedback-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        footer {
+            background: #111;
+            color: #aaa;
+            text-align: center;
+            padding: 50px 20px;
+            font-size: 0.95rem;
+        }
+
+        /* RESPONSIVO - CELULAR */
+        @media (max-width: 768px) {
+            .logo-img { height: 50px; }
+            .hero h1 { font-size: 2.8rem; }
+            .hero p { font-size: 1.2rem; }
+            h2 { font-size: 2.3rem; }
+            .container { padding: 80px 15px 100px; }
+
+            /* Menu hamburguer */
+            .menu-toggle { display: block; }
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: rgba(0,102,52,0.98);
+                flex-direction: column;
+                padding: 100px 30px 50px;
+                transition: 0.4s ease;
+                box-shadow: 5px 0 20px rgba(0,0,0,0.3);
+            }
+            nav.active {
+                left: 0;
+            }
+            nav a {
+                font-size: 1.3rem;
+                padding: 18px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            /* Fundo escuro quando menu aberto */
+            */
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.7);
+                z-index: 999;
+            }
+            .overlay.active { display: block; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- HEADER -->
     <header>
-        <img src="https://joaoricardocavalcante.github.io/Ambiente_Escolar/image - Editado.png" alt="Ambiente Escolar" class="logo-img">
-        <nav>
+        <img src="https://joaoricardocavalcante.github.io/Ambiente_Escolar/image%20-%20Editado.png" alt="Ambiente Escolar" class="logo-img">
+        
+        <i class="fas fa-bars menu-toggle" id="menu-btn"></i>
+        
+        <nav id="nav-menu">
             <a href="#estrutura">Estrutura</a>
             <a href="#convivencia">Convivência</a>
             <a href="#ensino">Ensino</a>
@@ -58,16 +248,24 @@
             <a href="#acessibilidade">Acessibilidade</a>
             <a href="#feedback">Feedback</a>
         </nav>
-        <button class="dark-toggle" onclick="document.body.classList.toggle('dark')"><i class="fas fa-moon"></i></button>
+        
+        <button class="dark-toggle" onclick="document.body.classList.toggle('dark')">
+            <i class="fas fa-moon"></i>
+        </button>
     </header>
 
+    <div class="overlay" id="overlay"></div>
+
+    <!-- HERO -->
     <section class="hero">
-        <img src="https://joaoricardocavalcante.github.io/Ambiente_Escolar/image - Editado.png" alt="Logo Ambiente Escolar">
+        <img src="https://joaoricardocavalcante.github.io/Ambiente_Escolar/image%20-%20Editado.png" alt="Logo">
         <h1>AMBIENTE ESCOLAR</h1>
         <p>Nosso objetivo é melhorar os ambientes escolares para um melhor convívio entre todos nessa instituição.</p>
     </section>
 
-    <!-- 1. Estrutura Escolar -->
+    <!-- Todas as suas seções 1 a 5 ficam exatamente iguais (já estão perfeitas) -->
+    <!-- (coloque aqui todas as divs .container que você já tem) -->
+    <!-- Exemplo de uma delas: -->
     <div class="container" id="estrutura">
         <h2>1. Estrutura Escolar</h2>
         <div class="cards">
@@ -77,85 +275,46 @@
         </div>
     </div>
 
-    <!-- 2. Convivência -->
-    <div class="container" id="convivencia">
-        <h2>2. Convivência Entre os Alunos</h2>
-        <div class="cards">
-            <div class="card"><div class="card-header">2.1 Intervalo Cultural</div><div class="card-body"><ul><li>Música ao vivo, slam, dança, apresentações espontâneas</li><li>Cria vínculo entre os alunos e fortalece o clima escolar</li></ul></div></div>
-            <div class="card"><div class="card-header">2.2 Torneios Interativos</div><div class="card-body"><ul><li>Xadrez</li><li>Uno</li><li>Just Dance</li><li>Trilha literária</li></ul></div></div>
-            <div class="card"><div class="card-header">2.3 Mentoria Estudantil</div><div class="card-body"><ul><li>Tour pelo campus</li><li>Orientações sobre trabalhos e rotina do IFPB</li><li>Aulas de boa convivência e cidadania</li></ul></div></div>
-            <div class="card"><div class="card-header">2.4 Rodas de Conversa Temáticas</div><div class="card-body"><ul><li>Ansiedade</li><li>Pressão dos estudos</li><li>Relacionamento saudável</li><li>Futuro profissional</li></ul></div></div>
-        </div>
-    </div>
+    <!-- Cole aqui as seções 2, 3, 4 e 5 exatamente como estavam -->
 
-    <!-- 3. Qualidade de Ensino -->
-    <div class="container" id="ensino">
-        <h2>3. Qualidade de Ensino</h2>
-        <div class="cards">
-            <div class="card"><div class="card-header">3.1 Clube de Estudos</div><div class="card-body"><ul><li>Grupos voltados para cada disciplina</li><li>Plantão de dúvidas com monitores</li><li>Aulas de reforço dadas por alunos ou professores</li></ul></div></div>
-            <div class="card"><div class="card-header">3.2 Trilhas de Aprendizagem</div><div class="card-body"><ul><li>Mapas mentais</li><li>Resumos</li><li>Vídeos</li><li>Simulados</li><li>Desafios gamificados</li></ul></div></div>
-            <div class="card"><div class="card-header">3.3 Semana do Conhecimento IFPB</div><div class="card-body"><ul><li>Feiras de ciências</li><li>Workshops</li><li>Mini cursos</li><li>Hackathon interno</li><li>Maratonas de programação</li></ul></div></div>
-        </div>
+    <!-- FEEDBACK -->
+    <div class="feedback" id="feedback">
+        <h2>Tem ideias ou sugestões?</h2>
+        <p>Sua voz é fundamental para construirmos um IFPB mais humano e acolhedor!</p>
+        <a href="https://docs.google.com/forms/d/1Z4WAOEXAAhfpOCje7PV4yrG2cNb6OYAcd18m3jyA3Xc" target="_blank" class="feedback-btn">
+            Enviar Sugestão Agora
+        </a>
+        <p>Todos os envios vão direto pra nossa planilha de feedback</p>
     </div>
-
-    <!-- 4. Bullying -->
-    <div class="container" id="bullying">
-        <h2>4. Bullying</h2>
-        <div class="cards">
-            <div class="card"><div class="card-header">4.1 Campanha “IFPB sem Bullying”</div><div class="card-body"><ul><li>Cartazes criados pelos alunos</li><li>Palestras interativas</li><li>Vídeos curtos feitos pelos estudantes</li><li>Caixas de denúncia anônima</li></ul></div></div>
-            <div class="card"><div class="card-header">4.2 Embaixadores da Paz</div><div class="card-body"><ul><li>Ajudam na mediação de conflitos</li><li>Acolhem colegas que sofrem exclusão</li><li>Promovem ações de respeito e empatia</li></ul></div></div>
-            <div class="card"><div class="card-header">4.3 Teatro e Dramatizações</div><div class="card-body"><ul><li>Bullying digital</li><li>Preconceito</li><li>Problemas emocionais</li><li>Consequências da agressão</li></ul></div></div>
-            <div class="card"><div class="card-header">4.4 Canal de Apoio Online</div><div class="card-body"><ul><li>Formulário ou app interno para denúncias e pedidos de ajuda</li></ul></div></div>
-        </div>
-    </div>
-
-    <!-- 5. Acessibilidade -->
-    <div class="container" id="acessibilidade">
-        <h2>5. Acessibilidade</h2>
-        <div class="cards">
-            <div class="card"><div class="card-header">5.1 Sinalização Acessível</div><div class="card-body"><ul><li>Placas com letras grandes</li><li>Mapas táteis (se possível)</li><li>Sinalização feita pelos alunos de Edificações/Informática</li></ul></div></div>
-            <div class="card"><div class="card-header">5.2 Guia em Áudio do Campus</div><div class="card-body"><ul><li>Áudios com orientações de localização</li><li>Disponibilizados via QR Codes nos blocos</li></ul></div></div>
-            <div class="card"><div class="card-header">5.3 Monitoria Inclusiva</div><div class="card-body"><ul><li>Grupos de apoio para alunos com deficiência</li><li>Adaptação de materiais por professores e colegas</li></ul></div></div>
-            <div class="card"><div class="card-header">5.4 Oficinas de Libras</div><div class="card-body"><ul><li>Aulas básicas de Libras abertas a todos</li><li>Integração entre surdos e ouvintes</li><li>Ministradas pelo setor de acessibilidade ou convidados</li></ul></div></div>
-            <div class="card"><div class="card-header">5.5 Material Didático Inclusivo</div><div class="card-body"><ul><li>Resumos em áudio</li><li>Videoaulas com legenda</li><li>Slides acessíveis</li><li>Apostilas com contraste adequado</li></ul></div></div>
-        </div>
-    </div>
-
-    <!-- Feedback -->
-   
-    <!-- Feedback -->
-<!-- Feedback -->
-<!-- Feedback -->
-<!-- Feedback -->
-<div class="feedback" id="feedback">
-    <h2>Tem ideias ou sugestões?</h2>
-    <p>Sua voz é fundamental para construirmos um IFPB mais humano e acolhedor!</p>
-
-    <div style="max-width:700px;margin:50px auto;">
-        <p style="text-align:center; color:rgba(255,255,255,0.9); font-size:1.1rem;">
-            Clique abaixo para enviar sua sugestão diretamente no Google Forms (leva 20 segundos!).
-        </p>
-        <div style="text-align:center; margin:30px 0;">
-            <a href="https://docs.google.com/forms/d/1Z4WAOEXAAhfpOCje7PV4yrG2cNb6OYAcd18m3jyA3Xc" target="_blank" 
-               style="background:white; color:var(--verde); padding:18px 40px; border-radius:12px; text-decoration:none; font-weight:bold; font-size:1.2rem; display:inline-block; transition:0.3s;">
-                📝 Enviar Sugestão Agora
-            </a>
-        </div>
-        <p style="text-align:center; color:rgba(255,255,255,0.8); font-size:0.9rem;">
-            Todos os envios vão direto pra planilha de feedback do projeto.
-        </p>
-    </div>
-</div>
 
     <footer>
         <p>Ambiente Escolar IFPB © 2025 • Juntos por um campus mais humano, inclusivo e acolhedor.</p>
     </footer>
 
+    <!-- SCRIPT DO MENU HAMBURGUER -->
     <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const overlay = document.getElementById('overlay');
+
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // Scroll suave
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
-                document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+                document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                // Fecha menu no celular
+                navMenu.classList.remove('active');
+                overlay.classList.remove('active');
             });
         });
     </script>
